@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health & Wellness Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #FAFAFA;
+  --card-bg: #FFFFFF;
+  --border: #EAEAEA;
+  --text-main: #2C2C2C;
+  --text-muted: #888888;
+  --accent: #7C8C80;
+  --accent-soft: #F0F3F1;
+  --rose-soft: #FAF0F2;
+  --rose-accent: #C48B96;
+  --radius: 12px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* 4-EQUAL CARD BALANCED GRID */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 680px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 170px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #F5F5F5;
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+}
+
+.card-title span {
+  font-size: 14px;
+}
+
+/* SECTION 1: SUPPLEMENTS */
+.supp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-grow: 1;
+}
+
+.supp-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.supp-item.done {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.supp-item input {
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* SECTION 2: APPOINTMENTS */
+.apt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-grow: 1;
+}
+
+.apt-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  background: var(--bg);
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.apt-name {
+  font-weight: 500;
+}
+
+.apt-date {
+  font-size: 10px;
+  color: var(--text-muted);
+  background: #FFF;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* SECTION 3: WEIGHT & MEASUREMENTS */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.metric-cell {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.metric-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.metric-input-wrap {
+  display: flex;
+  align-items: baseline;
+  margin-top: 2px;
+}
+
+.metric-input-wrap input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+  outline: none;
+}
+
+/* SECTION 4: CYCLE INFO */
+.cycle-summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex-grow: 1;
+  gap: 6px;
+}
+
+.cycle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.cycle-day-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--rose-accent);
+}
+
+.cycle-badge {
+  font-size: 10px;
+  background: var(--rose-soft);
+  color: var(--rose-accent);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.cycle-detail {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px dashed var(--border);
+  padding-top: 6px;
+}
+
+.cycle-detail strong {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+/* COMPACT INPUT FIELDS */
+.add-row {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid #F8F8F8;
+}
+
+.add-row input {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 10px;
+  outline: none;
+  background: var(--bg);
+}
+
+.add-row button {
+  border: none;
+  background: var(--accent);
+  color: #FFF;
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.add-row button:hover {
+  opacity: 0.85;
+}
+
+@media (max-width: 520px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="dashboard-grid">
+
+  <!-- 1. DAILY SUPPLEMENTS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span>🌿</span> Daily Supplements</div>
+    </div>
+    <div class="supp-list" id="suppsList"></div>
+    <div class="add-row">
+      <input type="text" id="suppInput" placeholder="Add supplement...">
+      <button onclick="addSupp()">+ Add</button>
+    </div>
+  </div>
+
+  <!-- 2. MEDICAL APPOINTMENTS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span>🩺</span> Appointments</div>
+    </div>
+    <div class="apt-list" id="aptList"></div>
+    <div class="add-row">
+      <input type="text" id="aptTitle" placeholder="Doctor / Clinic">
+      <input type="date" id="aptDate" style="max-width: 85px;">
+      <button onclick="addApt()">+</button>
+    </div>
+  </div>
+
+  <!-- 3. WEIGHT & MEASUREMENTS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span>⚖️</span> Body Metrics</div>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-cell">
+        <span class="metric-label">Weight</span>
+        <div class="metric-input-wrap">
+          <input type="text" id="mWeight" value="55 kg" onchange="saveMetrics()">
+        </div>
+      </div>
+      <div class="metric-cell">
+        <span class="metric-label">Waist</span>
+        <div class="metric-input-wrap">
+          <input type="text" id="mWaist" value="64 cm" onchange="saveMetrics()">
+        </div>
+      </div>
+      <div class="metric-cell">
+        <span class="metric-label">Bust</span>
+        <div class="metric-input-wrap">
+          <input type="text" id="mBust" value="86 cm" onchange="saveMetrics()">
+        </div>
+      </div>
+      <div class="metric-cell">
+        <span class="metric-label">Hips</span>
+        <div class="metric-input-wrap">
+          <input type="text" id="mHips" value="92 cm" onchange="saveMetrics()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. CYCLE INFO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span>🌸</span> Cycle Summary</div>
+    </div>
+    <div class="cycle-summary">
+      <div class="cycle-row">
+        <span class="cycle-day-val" id="cycleDay">Day 18</span>
+        <span class="cycle-badge" id="cyclePhase">Luteal Phase</span>
+      </div>
+      <div class="cycle-detail">
+        <span>Cycle Length:</span>
+        <strong id="cycleLen">25 Days</strong>
+      </div>
+      <div class="cycle-detail">
+        <span>Next Period:</span>
+        <strong id="nextPeriod">Oct 7</strong>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = "healthDashboardData_v2";
+
+const defaultData = {
+  lastPeriod: "2026-09-12",
+  cycleLength: 25,
+  supplements: [
+    { name: "Omega 3", done: false },
+    { name: "Magnesium", done: true },
+    { name: "Vitamin D3", done: false }
+  ],
+  appointments: [
+    { title: "Dentist", date: "2026-10-15" }
+  ],
+  metrics: {
+    weight: "55 kg",
+    waist: "64 cm",
+    bust: "86 cm",
+    hips: "92 cm"
+  }
+};
+
+let store = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultData;
+
+function saveStore() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+}
+
+/* SUPPLEMENTS */
+function renderSupps() {
+  const container = document.getElementById("suppsList");
+  container.innerHTML = "";
+  store.supplements.forEach((item, index) => {
+    const el = document.createElement("div");
+    el.className = `supp-item ${item.done ? 'done' : ''}`;
+    el.onclick = () => {
+      store.supplements[index].done = !store.supplements[index].done;
+      saveStore();
+      renderSupps();
+    };
+    el.innerHTML = `
+      <span>${escapeHTML(item.name)}</span>
+      <input type="checkbox" ${item.done ? 'checked' : ''} onclick="event.stopPropagation(); this.parentNode.click();">
+    `;
+    container.appendChild(el);
+  });
+}
+
+function addSupp() {
+  const input = document.getElementById("suppInput");
+  const val = input.value.trim();
+  if (val) {
+    store.supplements.push({ name: val, done: false });
+    input.value = "";
+    saveStore();
+    renderSupps();
+  }
+}
+
+/* APPOINTMENTS */
+function renderApts() {
+  const container = document.getElementById("aptList");
+  container.innerHTML = "";
+  store.appointments.forEach((item) => {
+    const el = document.createElement("div");
+    el.className = "apt-item";
+    const d = new Date(item.date);
+    const dateFormatted = isNaN(d) ? item.date : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    el.innerHTML = `
+      <span class="apt-name">${escapeHTML(item.title)}</span>
+      <span class="apt-date">${dateFormatted}</span>
+    `;
+    container.appendChild(el);
+  });
+}
+
+function addApt() {
+  const title = document.getElementById("aptTitle").value.trim();
+  const date = document.getElementById("aptDate").value;
+  if (title && date) {
+    store.appointments.push({ title, date });
+    document.getElementById("aptTitle").value = "";
+    document.getElementById("aptDate").value = "";
+    saveStore();
+    renderApts();
+  }
+}
+
+/* METRICS */
+function renderMetrics() {
+  document.getElementById("mWeight").value = store.metrics.weight || "";
+  document.getElementById("mWaist").value = store.metrics.waist || "";
+  document.getElementById("mBust").value = store.metrics.bust || "";
+  document.getElementById("mHips").value = store.metrics.hips || "";
+}
+
+function saveMetrics() {
+  store.metrics = {
+    weight: document.getElementById("mWeight").value,
+    waist: document.getElementById("mWaist").value,
+    bust: document.getElementById("mBust").value,
+    hips: document.getElementById("mHips").value
+  };
+  saveStore();
+}
+
+/* CYCLE COMPUTATION */
+function renderCycle() {
+  const last = new Date(store.lastPeriod);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  last.setHours(0,0,0,0);
+
+  const diffTime = Math.abs(today - last);
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const currentDay = (diffDays % store.cycleLength) + 1;
+
+  let phase = "Follicular";
+  if (currentDay <= 5) phase = "Menstruation";
+  else if (currentDay <= 13) phase = "Follicular";
+  else if (currentDay <= 16) phase = "Ovulation";
+  else phase = "Luteal Phase";
+
+  const nextDate = new Date(last);
+  const cyclesPassed = Math.floor(diffDays / store.cycleLength) + 1;
+  nextDate.setDate(last.getDate() + (cyclesPassed * store.cycleLength));
+
+  document.getElementById("cycleDay").textContent = `Day ${currentDay}`;
+  document.getElementById("cyclePhase").textContent = phase;
+  document.getElementById("cycleLen").textContent = `${store.cycleLength} Days`;
+  document.getElementById("nextPeriod").textContent = nextDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
+function escapeHTML(str) {
+  return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/* INIT */
+renderSupps();
+renderApts();
+renderMetrics();
+renderCycle();
+</script>
+
+</body>
+</html>
